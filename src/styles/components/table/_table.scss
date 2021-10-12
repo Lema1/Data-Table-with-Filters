@@ -1,0 +1,30 @@
+.dataTable {
+  &__records {
+    &.count {
+    }
+  }
+  &__filter {
+    &.global {
+      input {
+        color: red;
+      }
+    }
+  }
+  &__table {
+    &.table {
+      thead {
+        color: inherit;
+      }
+      tbody {
+        color: inherit;
+        &.row {
+        }
+        &.col {
+        }
+      }
+      tfoot {
+        color: inherit;
+      }
+    }
+  }
+}
