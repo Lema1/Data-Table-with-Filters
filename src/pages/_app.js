@@ -1,10 +1,14 @@
-import '../styles/app.scss';
+import Layout from "../components/Layout";
+import "../styles/app.scss";
 
 const MyApp = (props) => {
   const { Component, pageProps } = props;
-  
-  return <Component {...pageProps} />
-}
 
+  return (
+    <Layout>
+      <Component {...pageProps} />
+    </Layout>
+  );
+};
 
-export default MyApp
+export default MyApp;

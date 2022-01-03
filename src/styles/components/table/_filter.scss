@@ -1,0 +1,128 @@
+.filter {
+  position: fixed;
+  height: 80vh;
+  width: 65%;
+  top: $header;
+  background: $c-secondary;
+  box-shadow: 0px 2px 6px rgba(0, 141, 121, 1);
+  overflow-y: scroll;
+
+  z-index: 999;
+  &.hide {
+    right: -100%;
+  }
+  &.show {
+    right: 0;
+    animation-name: slideFilter;
+    animation-duration: 0.5s;
+  }
+
+  &__close {
+    position: absolute;
+    height: $mb-4;
+    width: $mb-4;
+    line-height: 2rem;
+    cursor: pointer;
+    background: $c-primary;
+    text-align: center;
+    font-weight: 700;
+  }
+
+  &__title {
+    padding: 0.3rem 0;
+    width: 100%;
+    height: $mb-4;
+    border-bottom: 2px solid $c-primary;
+    box-shadow: 0px 2px 4px 1px rgba(0, 0, 0, 0.2);
+    font-weight: 650;
+    text-align: center;
+    border-radius: 0px 0px 4px 4px;
+  }
+  &__container {
+    width: 100%;
+    margin-top: $mb-1;
+    box-shadow: 0px -3px 4px 1px rgba(0, 0, 0, 0.2);
+    border-radius: 3px;
+    .text {
+    }
+  }
+
+  &__input {
+    &-container {
+      width: 100%;
+      padding: $mb-1;
+      &.text {
+        input {
+          border: 0;
+          border-bottom: 1px solid $c-primary;
+          padding: 0px 2px 1px 4px;
+          font-weight: 450;
+        }
+        ::-webkit-input-placeholder {
+          font-size: 0.75em;
+        }
+      }
+      &.global {
+        padding: 0;
+      }
+      &.select {
+        select {
+          padding: 0px 2px 1px 4px;
+          width: 100%;
+        }
+      }
+      &.checkbox {
+        label {
+          display: block;
+          position: relative;
+          text-align: center;
+          cursor: pointer;
+          font-size: 1em;
+          padding: 0 0.3rem $mb-1 0.3rem;
+          input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+            height: 0;
+            width: 0;
+          }
+          .checkmark {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 25px;
+            width: 25px;
+            background-color: #eee;
+            &::after {
+              content: "";
+              position: absolute;
+              display: none;
+            }
+          }
+          &:hover input ~ .checkmark {
+            background-color: #ccc;
+          }
+          input:checked ~ .checkmark {
+            background-color: $c-primary;
+          }
+        }
+      }
+    }
+    &-title {
+      display: block;
+      width: 100%;
+      text-align: center;
+      color: $c-primary;
+      font-weight: 600;
+    }
+  }
+}
+
+@keyframes slideFilter {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(0%);
+  }
+}

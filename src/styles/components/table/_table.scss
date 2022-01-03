@@ -1,29 +1,66 @@
-.dataTable {
-  &__records {
-    &.count {
-    }
+.data-table {
+  padding: $mb-1;
+  &__actions {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: $mb-2;
   }
+
   &__filter {
-    &.global {
-      input {
-        color: red;
-      }
+    width: 100%;
+    &.btn {
+      background: $c-primary;
+      padding: $mb-1;
+      text-align: center;
+      color: $c-secondary;
+      margin-bottom: $mb-1;
+      cursor: pointer;
+      border-radius: 5px;
     }
   }
+
+  &__table-container {
+    overflow-x: auto;
+    width: 100%;
+    border-radius: 5px 5px 0 0;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  }
+
   &__table {
-    &.table {
-      thead {
-        color: inherit;
+    border-collapse: collapse;
+    font-size: 0.9em;
+    min-width: $mb-4;
+    border-radius: 5px 5px 0 0;
+    width: 100%;
+    overflow: hidden;
+    thead {
+      tr {
+        background-color: $c-primary;
+        color: $c-secondary;
+        text-align: left;
+        font-weight: bold;
+        padding: 0;
       }
-      tbody {
-        color: inherit;
-        &.row {
-        }
-        &.col {
-        }
+      th {
+        padding: 0.3rem 0.4rem;
+        cursor: pointer;
+        color: $c-secondary;
       }
-      tfoot {
-        color: inherit;
+    }
+    tbody {
+      td {
+        text-align: left;
+        padding: 0.3rem 0.4rem;
+      }
+      tr {
+        border-bottom: 1px solid #ddd;
+        &:nth-of-type(even) {
+          background-color: #f3f3f3;
+        }
+        &:last-of-type {
+          border-bottom: 2px solid $c-primary;
+        }
       }
     }
   }

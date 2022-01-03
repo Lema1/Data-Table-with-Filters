@@ -1,7 +1,39 @@
-nav {
-  display: flex;
-  flex-direction: row;
+.pagination {
+  margin-top: $mb-1;
+  ul {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.3rem 0.1rem;
+    border-radius: 50px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  }
   li {
-    padding: 0px 15px 0px 0px;
+    height: $mb-4;
+    width: $mb-4;
+    line-height: 2rem;
+    cursor: pointer;
+    display: block;
+    margin: 0 0.1rem;
+    border-radius: 50%;
+    text-align: center;
+    font-weight: 600;
+  }
+  &__item {
+    &.dots {
+      cursor: default;
+      width: $mb-1;
+    }
+    &.active {
+      background: $c-primary;
+      color: $c-secondary;
+    }
+    &.arrow {
+      background: $c-primary;
+      color: $c-secondary;
+    }
+  }
+  .disable {
+    cursor: not-allowed;
+    display: none;
   }
 }

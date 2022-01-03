@@ -2,21 +2,20 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200&display=swap");
 
 @import "var";
-@import "header";
-@import "nav";
+@import "components/header";
+@import "components/nav";
 
 //component table
 @import "components/table/table";
-@import "components/table/table-input";
 @import "components/table/pagination";
+@import "components/table/filter";
 
 html,
 body {
   margin: 0 0 0 0;
   padding: 0;
   font-family: $font-family;
-  background-color: $c-background;
-  color: $c-text;
+  background-color: $c-secondary;
 }
 
 a {
@@ -31,7 +30,21 @@ a {
   outline: none;
   color: inherit;
   font: inherit;
+  color: $c-third;
 }
+
 li {
   list-style-type: none;
+}
+span {
+  color: inherit;
+}
+
+.main {
+  width: 100%;
+  padding: 0 $mb-1 0 $mb-1;
+}
+
+.container {
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.6);
 }
