@@ -1,11 +1,11 @@
-import React from "react";
+import { Fragment } from "react";
 import { useState, useEffect } from "react";
 import { FilterGlobal } from "./FilterInput";
 import Pagination from "./Pagination";
 import Filter from "./Filter";
 
+/*== FUNCION DE CONSTRUCCION DE DATA ==*/
 export const constructData = (collection, columns) => {
-  // FUNCION DE CONTRUCCION DE DATA
   let dataTemp = [];
   let keySplit;
 
@@ -25,6 +25,17 @@ export const constructData = (collection, columns) => {
       }
     });
   });
+  return dataTemp;
+};
+
+/*== FUNCION DE CONSTRUCCION DE FILTROS  ==*/
+export const constructFilterFields = (filterIndex) => {
+  let dataTemp = [];
+
+  filterIndex.map((item, index) => {
+    dataTemp[item] = "";
+  });
+
   return dataTemp;
 };
 
@@ -69,25 +80,28 @@ const DataTable = (props) => {
     name,
     columns,
     collection,
-    filter,
-    globalFilter,
-    filterFields,
     pagination,
     dataPerPage,
+    globalFilter,
+    filter,
+    filterIndex,
   } = props;
 
+  /*== STATE DE DATA DE FILTROS ==*/
+  const [preFilterData, setPreFilterData] = useState([]); //STATE DE TODA LOS ITEMS
   const [data, setData] = useState([]); // STATE QUE ALMACENA LA DATA SEGUN CAMBIOS EN FILTROS
-  const [preFilterData, setPreFilterData] = useState([]);
+  const [filterFields, setFilterFields] = useState([]);
+
+  const [globalKeyword, setGlobalKeyword] = useState(""); // STATE DE FILTRO GLOBAL
+  const [openFilter, setOpenFilter] = useState(false);
+
   /*== STATE DE ALMACENAMIENTO PARA ORDENAR TABLA ==*/
   const [orderDirection, setOrderDirection] = useState();
   const [orderValue, setOrderValue] = useState();
 
   /*== STATE DE PAGINACION ==*/
   const [currentPage, setCurrentPage] = useState(1); //STATE DE PAGINA ACTUAL
-  const [itemPerPage, setItemPerPage] = useState(dataPerPage ? dataPerPage : 5); //STATE DE CUANTOS ITEMS POR PAGINA
-
-  const [globalKeyword, setGlobalKeyword] = useState(""); // STATE DE FILTRO GLOBAL
-  const [openFilter, setOpenFilter] = useState(false);
+  const [itemPerPage, setItemPerPage] = useState(dataPerPage ? dataPerPage : 5); //STATE DE ITEMS POR PAGINA
 
   const indexOfLastItem = currentPage * itemPerPage;
   const indexOfFirstItem = indexOfLastItem - itemPerPage;
@@ -122,16 +136,75 @@ const DataTable = (props) => {
 
   //FUNCTION GLOBAL FILTER TEXT
   const handlerGlobalSearch = (keyword) => {
-    let resultData = searchGlobal(collection, filterFields, keyword);
+    let resultData = searchGlobal(collection, filterIndex, keyword);
     setGlobalKeyword(keyword);
     setData(constructData(resultData, columns));
     setCurrentPage(1);
+  };
+
+  //FUNCION QUE CONTROLA LOS CAMBIOS EN LOS FILTROS
+  const handlerFilterKeyword = (keyword, index, type) => {
+    console.log("filterFields", filterFields);
+    let newArr = filterFields;
+
+    newArr[index] = { keyword: keyword, type: type };
+    setFilterFields(newArr);
+    handlerFilter();
+  };
+
+  const handlerFilter = () => {
+    let filterData = preFilterData;
+
+    console.log("field", filterFields);
+
+    Object.keys(filterFields).map((index) => {
+      if (filterFields[index]) {
+        if (filterFields[index].type === "checkbox") {
+          if (filterFields[index].keyword.length == 0) {
+            return false;
+          } else {
+            filterData = filterData.filter((item) => {
+              for (var key in filterFields[index].keyword) {
+                if (
+                  !item[index] === undefined ||
+                  item[index].toString().toLowerCase() ===
+                    filterFields[index].keyword[key].toLowerCase()
+                )
+                  return true;
+              }
+            });
+          }
+        } else {
+          filterData = filterData.filter((item) => {
+            if (
+              item[index]
+                .toString()
+                .toLowerCase()
+                .includes(filterFields[index].keyword.toLowerCase())
+            )
+              return true;
+          });
+        }
+      }
+    });
+
+    if (filterData) {
+      setData(filterData);
+    } else {
+      setData(preFilterData);
+    }
   };
 
   useEffect(() => {
     let resultData = constructData(collection, columns);
     setData(resultData);
     setPreFilterData(resultData);
+
+    if (filterIndex) {
+      let resultFilterField = constructFilterFields(filterIndex);
+      setFilterFields(resultFilterField);
+    }
+
     if (pagination) {
       currentItem = resultData.slice(indexOfFirstItem, indexOfLastItem);
     } else {
@@ -166,21 +239,27 @@ const DataTable = (props) => {
           </select>
         </div>
       </div>
-      <div
-        className="data-table__filter btn"
-        onClick={() => setOpenFilter(!openFilter)}
-      >
-        <span className="data-table__filter-open">Filtros</span>
-      </div>
-      <Filter
-        state={openFilter}
-        setState={setOpenFilter}
-        data={data}
-        setData={setData}
-        columns={columns}
-        collection={collection}
-        preFilterData={preFilterData}
-      />
+
+      {filter && (
+        <Fragment>
+          <div
+            className="data-table__filter btn"
+            onClick={() => setOpenFilter(!openFilter)}
+          >
+            <span className="data-table__filter-open">Filtros</span>
+          </div>
+          <Filter
+            state={openFilter}
+            setState={setOpenFilter}
+            data={data}
+            setData={setData}
+            columns={columns}
+            collection={collection}
+            preFilterData={preFilterData}
+            handlerFilterKeyword={handlerFilterKeyword}
+          />
+        </Fragment>
+      )}
       <div className="data-table__table-container">
         <table className="data-table__table">
           <thead className="data-table__header">
@@ -214,11 +293,6 @@ const DataTable = (props) => {
               );
             })}
           </tbody>
-          {/* <tfoot>
-              <tr>
-                  <td><span>tfoot</span></td>
-              </tr>
-          </tfoot> */}
         </table>
       </div>
       <div className="data-table__pagination">

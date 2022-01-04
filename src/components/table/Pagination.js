@@ -9,6 +9,7 @@ const Pagination = (props) => {
     nextPage,
     goToPage,
   } = props;
+
   const [activePage, setActivePage] = useState(currentPage);
   const [showPages, setShowPages] = useState([]);
 

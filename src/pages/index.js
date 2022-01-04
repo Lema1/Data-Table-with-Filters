@@ -24,9 +24,9 @@ const Home = (props) => {
         name="Albums"
         columns={columns}
         collection={albums}
-        filter={true}
+        pagination={false}
         globalFilter={true}
-        filterFields={["title", "userId"]}
+        filter={false}
       />
     </div>
   );

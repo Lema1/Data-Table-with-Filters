@@ -2,9 +2,15 @@ import React, { Fragment } from "react";
 import { FilterText, FilterSelect, FilterCheckBox } from "./FilterInput";
 
 const Filter = (props) => {
-  const { state, setState, data, setData, columns, preFilterData } = props;
-  // console.log(props);
-
+  const {
+    state,
+    setState,
+    data,
+    setData,
+    columns,
+    preFilterData,
+    handlerFilterKeyword,
+  } = props;
   return (
     <div className={`filter ${state ? "show" : "hide"}`}>
       <div className="filter__close" onClick={() => setState(!state)}>
@@ -22,9 +28,6 @@ const Filter = (props) => {
                   <FilterText
                     title={item.Header}
                     target={item.key}
-                    setData={setData}
-                    data={data}
-                    preFilterData={preFilterData}
                     placeholder={`Ej: ${
                       item.key === "name"
                         ? "Alvaro"
@@ -32,6 +35,7 @@ const Filter = (props) => {
                         ? "Lorem"
                         : "alvaro@test.cl"
                     }`}
+                    handlerFilterKeyword={handlerFilterKeyword}
                   />
                 </Fragment>
               );
@@ -42,9 +46,8 @@ const Filter = (props) => {
                   <FilterSelect
                     title={item.Header}
                     target={item.key}
-                    setData={setData}
-                    data={data}
                     preFilterData={preFilterData}
+                    handlerFilterKeyword={handlerFilterKeyword}
                   />
                 </Fragment>
               );
@@ -55,9 +58,8 @@ const Filter = (props) => {
                   <FilterCheckBox
                     title={item.Header}
                     target={item.key}
-                    setData={setData}
-                    data={data}
                     preFilterData={preFilterData}
+                    handlerFilterKeyword={handlerFilterKeyword}
                   />
                 </Fragment>
               );

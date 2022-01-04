@@ -1,4 +1,4 @@
-import { Fragment, useState, useEffect } from "react";
+import { useState } from "react";
 
 export const FilterGlobal = (props) => {
   const { keyword, setFilter, data, ...rest } = props;
@@ -17,25 +17,15 @@ export const FilterGlobal = (props) => {
 };
 
 export const FilterText = (props) => {
-  const { title, target, setData, data, preFilterData, ...rest } = props;
-  let filterData;
-  const handdlerSearch = (value) => {
-    if (value) {
-      filterData = data.filter((item) => {
-        if (item[target].toString().toLowerCase().includes(value.toLowerCase()))
-          return true;
-      });
-      return setData(filterData);
-    }
-    return setData(preFilterData);
-  };
+  const { title, target, handlerFilterKeyword, ...rest } = props;
+
   return (
     <div className="filter__input-container text">
       <span className="filter__input-title">{title}</span>
       <input
         type="text"
         className="filter__input-text"
-        onChange={(e) => handdlerSearch(e.target.value)}
+        onChange={(e) => handlerFilterKeyword(e.target.value, target, "text")}
         {...rest}
       />
     </div>
@@ -43,30 +33,17 @@ export const FilterText = (props) => {
 };
 
 export const FilterSelect = (props) => {
-  const { title, target, setData, data, preFilterData, ...rest } = props;
+  const { title, target, preFilterData, handlerFilterKeyword, ...rest } = props;
   const options = [...new Set(preFilterData.map((item) => item[target]))];
   const [filterValue, setFilterValue] = useState();
-  let filterData;
 
-  const handlerSearch = (value) => {
-    if (value) {
-      filterData = preFilterData.filter((item) => {
-        if (item[target].toString().toLowerCase().includes(value.toLowerCase()))
-          return true;
-      });
-      setFilterValue(value);
-      return setData(filterData);
-    }
-    setFilterValue();
-    return setData(preFilterData);
-  };
   return (
     <div className="filter__input-container select">
       <span className="filter__input-title">{title}</span>
       <select
         className="filter__input-select"
         value={filterValue}
-        onChange={(e) => handlerSearch(e.target.value)}
+        onChange={(e) => handlerFilterKeyword(e.target.value, target, "select")}
         {...rest}
       >
         <option value="">Todos</option>
@@ -83,44 +60,26 @@ export const FilterSelect = (props) => {
 };
 
 export const FilterCheckBox = (props) => {
-  const { title, target, setData, data, preFilterData, ...rest } = props;
+  const { title, target, preFilterData, handlerFilterKeyword, ...rest } = props;
+
   const options = [...new Set(preFilterData.map((item) => item[target]))];
   const [activeFilter, setActiveFilter] = useState([]);
-  let filterData;
 
   const handlerSearch = (value) => {
+    let activeOptions;
     if (activeFilter.includes(value)) {
       const filterIndex = activeFilter.indexOf(value);
       const newFilter = [...activeFilter];
       newFilter.splice(filterIndex, 1);
+      activeOptions = newFilter;
       setActiveFilter(newFilter);
     } else {
       activeFilter.push(value);
+      activeOptions = [...activeFilter];
       setActiveFilter([...activeFilter]);
     }
+    handlerFilterKeyword(activeOptions, target, "checkbox");
   };
-
-  function filter() {
-    if (activeFilter.length == 0) {
-      setData(preFilterData);
-    } else {
-      filterData = preFilterData.filter((item) => {
-        for (var key in activeFilter) {
-          if (
-            !item[target] === undefined ||
-            item[target].toString().toLowerCase() ===
-              activeFilter[key].toLowerCase()
-          )
-            return true;
-        }
-      });
-      setData(filterData);
-    }
-  }
-
-  useEffect(() => {
-    filter();
-  }, [activeFilter]);
 
   return (
     <div className="filter__input-container checkbox">

@@ -33,7 +33,7 @@ const Todos = (props) => {
         collection={todos}
         filter={true}
         globalFilter={true}
-        filterFields={["userId", "title", "completed"]}
+        filterIndex={["userId", "title", "completed"]}
         pagination={true}
         dataPerPage={5}
       />

@@ -36,10 +36,11 @@ const Users = (props) => {
         name="Usuarios"
         columns={columns}
         collection={users}
-        filter={true}
-        globalFilter={true}
-        filterFields={["name", "email"]}
         pagination={true}
+        dataPerPage={4}
+        globalFilter={true}
+        filter={true}
+        filterIndex={["name", "email", "address.city", "company.name"]}
       />
     </div>
   );
