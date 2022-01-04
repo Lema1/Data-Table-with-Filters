@@ -1,34 +1,74 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Tabla de Datos con Filtros
 
-## Getting Started
+Permite crear tablas de dato dinamicas, controlando las cabezeras
+y a que datos acceder. Ademas de poder crear filtros
 
-First, run the development server:
+## Tech Stack
+
+**Client:** React, Next Js, Sass
+
+## Installation
+
+Primero instalar las dependencias
+
+```bash
+npm install
+```
+
+Luego ejecute el servidor de desarrollo:
 
 ```bash
 npm run dev
-# or
-yarn dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Usage/Examples
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+Coleccion de datos [Users - JSON Paceholder](https://jsonplaceholder.typicode.com/users)
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+Primero es crear la estructura de las columnas,
+el nombre a mostrar la key para acceder a los datos y el tipo de filtro
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+```javascript
+const columns = [
+  {
+    Header: "Id",
+    key: "id",
+    filterType: null,
+  },
+  {
+    Header: "Nombre",
+    key: "name",
+    filterType: "text",
+  },
+  {
+    Header: "E-mail",
+    key: "email",
+    filterType: "text",
+  },
+  {
+    Header: "Ciudad",
+    key: "address.city",
+    filterType: "select",
+  },
+  {
+    Header: "Compañia",
+    key: "company.name",
+    filterType: "select",
+  },
+];
+```
 
-## Learn More
+Lo siguiente es user el componente DataTable
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+```javascript
+<DataTable
+  name="Usuarios"
+  columns={columns}
+  collection={response}
+  pagination={true}
+  dataPerPage={4}
+  globalFilter={true}
+  filter={true}
+  filterIndex={["name", "email", "address.city", "company.name"]}
+/>
+```

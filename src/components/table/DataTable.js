@@ -47,7 +47,6 @@ const orderBy = (data, direction, target) => {
 };
 
 const SortArrow = ({ direction }) => {
-  // console.log(direction);
   if (!direction) {
     return <></>;
   }
@@ -144,7 +143,6 @@ const DataTable = (props) => {
 
   //FUNCION QUE CONTROLA LOS CAMBIOS EN LOS FILTROS
   const handlerFilterKeyword = (keyword, index, type) => {
-    console.log("filterFields", filterFields);
     let newArr = filterFields;
 
     newArr[index] = { keyword: keyword, type: type };
@@ -154,8 +152,6 @@ const DataTable = (props) => {
 
   const handlerFilter = () => {
     let filterData = preFilterData;
-
-    console.log("field", filterFields);
 
     Object.keys(filterFields).map((index) => {
       if (filterFields[index]) {

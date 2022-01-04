@@ -2,7 +2,7 @@ import axios from "axios";
 import DataTable from "../components/table/DataTable";
 
 const Users = (props) => {
-  const { users } = props;
+  const { response } = props;
   const columns = [
     {
       Header: "Id",
@@ -35,7 +35,7 @@ const Users = (props) => {
       <DataTable
         name="Usuarios"
         columns={columns}
-        collection={users}
+        collection={response}
         pagination={true}
         dataPerPage={4}
         globalFilter={true}
@@ -51,7 +51,7 @@ export const getStaticProps = async () => {
 
   return {
     props: {
-      users: users.data,
+      response: users.data,
     },
   };
 };

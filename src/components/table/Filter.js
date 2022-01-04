@@ -13,11 +13,13 @@ const Filter = (props) => {
   } = props;
   return (
     <div className={`filter ${state ? "show" : "hide"}`}>
-      <div className="filter__close" onClick={() => setState(!state)}>
-        X
-      </div>
-      <div className="filter__title">
-        <span>Filtros</span>
+      <div className="filter__header">
+        <div className="filter__header-close" onClick={() => setState(!state)}>
+          X
+        </div>
+        <div className="filter__header-title">
+          <span>Filtros</span>
+        </div>
       </div>
       <div className="filter__container">
         {columns.map((item, index) => {

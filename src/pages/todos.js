@@ -2,7 +2,7 @@ import axios from "axios";
 import DataTable from "../components/table/DataTable";
 
 const Todos = (props) => {
-  const { todos } = props;
+  const { response } = props;
   const columns = [
     {
       Header: "Id",
@@ -30,12 +30,12 @@ const Todos = (props) => {
       <DataTable
         name="Usuarios"
         columns={columns}
-        collection={todos}
+        collection={response}
         filter={true}
         globalFilter={true}
         filterIndex={["userId", "title", "completed"]}
         pagination={true}
-        dataPerPage={5}
+        dataPerPage={10}
       />
     </div>
   );
@@ -45,7 +45,7 @@ export const getStaticProps = async () => {
   const todos = await axios.get("https://jsonplaceholder.typicode.com/todos");
   return {
     props: {
-      todos: todos.data,
+      response: todos.data,
     },
   };
 };

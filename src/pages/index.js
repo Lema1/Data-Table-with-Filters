@@ -2,7 +2,7 @@ import axios from "axios";
 import DataTable from "../components/table/DataTable";
 
 const Home = (props) => {
-  const { albums } = props;
+  const { response } = props;
   const columns = [
     {
       Header: "Id",
@@ -23,7 +23,7 @@ const Home = (props) => {
       <DataTable
         name="Albums"
         columns={columns}
-        collection={albums}
+        collection={response}
         pagination={false}
         globalFilter={true}
         filter={false}
@@ -37,7 +37,7 @@ export const getStaticProps = async () => {
 
   return {
     props: {
-      albums: albums.data,
+      response: albums.data,
     },
   };
 };
